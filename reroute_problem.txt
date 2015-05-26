@@ -1,0 +1,67 @@
+Issue #1: Stream management / Message Carbons interoperability
+**************************************************************
+
+Preface:
+Stream management reroutes stanzas that weren't acknowledged by a client when
+the session is terminated. This can happen when the session is resumed,
+mgmt_timeout has expired, when the server shuts down or when a client sends a
+closing stream tag. In the resume case ejabberd_c2s:handle_unacked_stanzas/2
+is called, in the other cases ejabberd_c2s:handle_unacked_stanzas/1 is called.
+There is the config option resend_on_timeout with possible values
+'true', 'false' and 'if_offline'. Assumption: we want to prevent message loss,
+so we set it to 'true'.
+
+Problem:
+A stanza (precisely: a message) that is rerouted in
+ejabberd_c2s:handle_unacked_stanzas/1 might be sent to a resource that already
+received it because is has message carbons enabled. Receiving multiple copies
+of a message leads to a bad user experience.
+
+Proposed solution:
+introduce a folded hook 'mgmt_queue_add_hook'. mod_carboncopy can add a
+handler that returns a reroute-flag. The reroute-flag is stored in the
+mgmt_queue along with each stanza and is true by default. The flag is
+evaluated by handle_unacked_stanzas/1. It only should have effect if
+resend_on_timeout is set to 'true'.
+This solution assumes that a stanza does not need to be rerouted if any
+resource has carbons enabled at the receive time.
+
+more thoughts needed:
+* Should mod_mam also add a handler to mgmt_queue_add_hook set the reroute
+flag to false for stanzas it stored?
+
+
+Issue #2: push users lose messages in case of server restarts / Message
+Carbons interoperability
+***********************************************************************
+
+Preface:
+mod_push relies ejabberd_c2s' mgmt_queue to store stanzas. mgmt_queue gets
+destroyed when ejabberd_c2s:terminate is called. This happens when the
+mgmt_timeout has expired, when the server shuts down or then the client sends
+a closing stream tag. Assumption: resend_on_timeout is set to 'true'
+
+Problem:
+We don't want the queued stanzas to be rerouted when the server restarts but
+instead reroute them by ourselves when the client started a new session after
+the restart.
+
+Proposed solution:
+mod_push adds a handler to 'mgmt_queue_add_hook' (see Issue #1). If stream
+management stores a stanza a push-enabled user this handler stores it on disk
+(push_stored_packet mnesia table) and returns reroute-flag 'false_on_system_shutdown'.
+The handler should run *after* the mod_carboncopy handler and only overwrite
+reroute-flag value 'true'.
+After a reboot when a user comes back online (probably a server_available event push
+notification has to be sent) mod_push resends the stanzas in a
+user_available_hook handler and then deletes them from push_stored_packet.
+
+more thoughts needed:
+* ejabberd_c2s:handle_unacked_stanza/2 needs to know if it's called in a
+system_shutdown context. To achieve that we can send a kick event with
+system_shutdown as reason. Does this have evil side effects? 
+* mod_push will resend stanzas regardless of mod_carboncopy having already forked it.
+By sending a push notification we promised that the client can pick up something, but
+mod_carboncopy will fork it again, so the reroute problem is still not solved
+for mod_push :-(
+
