@@ -64,4 +64,6 @@ system_shutdown as reason. Does this have evil side effects?
 By sending a push notification we promised that the client can pick up something, but
 mod_carboncopy will fork it again, so the reroute problem is still not solved
 for mod_push :-(
+* mod_push could add a XEP-0280 'private' or a XEP-0334 'no-copy' element to
+messages before resending them (mod_carbon_copy ignores such messages)
 
