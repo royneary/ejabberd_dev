@@ -155,7 +155,7 @@ You can find the source code and documentation of both [mod_push](https://github
 ## Up next
 Both mod_push and oshiya still require some work.
 Right now mod_push is the more mature project. It made some modifications of ejabberd necessary which
-are not yet merged back into master. So running mod_push currently requires [my ejabberd branch](https://github.com/royneary/ejabberd).
+are not yet merged back into master. So running mod_push currently requires [my ejabberd branch](https://github.com/royneary/ejabberd/tree/mod_push_adjustments).
 Hopefully this will change soon.
 
 oshiya does not support all push services yet (Mozilla SimplePush and WNS are
