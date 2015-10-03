@@ -55,7 +55,7 @@ needed for crafting a push notification to the app server which then crafts
 and sends a push notification request to the vendor's push service.
 To be exact the XEP only specifies the XMPP server part and does not tell what an app server should do (as my project is
 all about push it's not hard to guess what my app server implementation does:
-crafting and dispatching push notifications, yay!).
+initiating push notifications, yay!).
 This indirect approach allows different XMPP servers to use the same app
 server. Most vendors (that is all except
 for Ubuntu and Mozilla) even require such a setup. When a push provider wants
@@ -103,7 +103,7 @@ It needs the node name and the password it received earlier for that.
 a push notification request and sends it to [Apple's push notification service](https://developer.apple.com/library/ios/documentation/NetworkingInternet/Conceptual/RemoteNotificationsPG/Chapters/ApplePushService.html),
 including the token identifying Alice's iPhone.
 
-7. Alices iPhone receives the push notification. Chatninja wakes up and connects
+7. Alice's iPhone receives the push notification. Chatninja wakes up and connects
 to the XMPP server to pick up Bob's message.
 
 ## Implementation
@@ -155,17 +155,17 @@ You can find the source code and documentation of both [mod_push](https://github
 ## Up next
 Both mod_push and oshiya still require some work.
 Right now mod_push is the more mature project. It made some modifications of ejabberd necessary which
-are not yet merged back into master. So running mod_push currently requires my ejabberd branch.
+are not yet merged back into master. So running mod_push currently requires [my ejabberd branch](https://github.com/royneary/ejabberd).
 Hopefully this will change soon.
 
 oshiya does not support all push services yet (Mozilla SimplePush and WNS are
-missing). It does not support service discovery yet either. I will try to build
+missing). It does not support service discovery yet either. Besides that I will try to build
 oshiya packages for popular linux distributions soon (help is very welcome)
 and I'll write more documentation too.
 
 Last but not least I'll cooperate with app developers and try and help fixing
 issues that might come up. I know of some people who are already actively working on
-mobile XMPP apps supporting push. Off course everyone is ivited to try my
+mobile XMPP apps supporting push. Off course everyone is invited to try my
 software and file bug reports.
 
 If you wonder how mobile XMPP's future will look like you should also have a
