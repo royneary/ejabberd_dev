@@ -143,7 +143,7 @@ run by the app developer. My app server implementations allow both setups.
 An important implementation detail is how ejabberd distinguishes between
 connected and disconnected clients. mod_push uses stream management's
 resumption feature for that. Clients are expected to close their connection
-when they're about to be stopped. If a client enabled push before mod_push
+when they're about to be stopped. If a client enabled push before, mod_push
 will initiate push notifications from now on until the client resumes its XMPP
 stream. Another approach would be to close the XMPP stream completely when the
 app is stopped. The advantage of my approach is that clients will keep their
