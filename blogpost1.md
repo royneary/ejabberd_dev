@@ -165,7 +165,7 @@ and I'll write more documentation too.
 
 Last but not least I'll cooperate with app developers and try and help fixing
 issues that might come up. I know of some people who are already actively working on
-mobile XMPP apps supporting push. Off course everyone is invited to try my
+mobile XMPP apps supporting push. Of course everyone is invited to try my
 software and file bug reports.
 
 If you wonder how mobile XMPP's future will look like you should also have a
