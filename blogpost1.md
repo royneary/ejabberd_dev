@@ -15,6 +15,7 @@ to use in order to let their apps communicate with the outside. That's an
 attempt to save battery by limiting CPU cycles and wireless
 communication to a minimum. I'll pick iOS as an example but all operating systems I looked at follow very
 similar approaches. 
+
 I'll simplify the situation a little in order to make it
 clear. An iOS app only runs as long as you look at it. As soon as you switch to
 another app or turn off the screen the app will be stopped. The OS gives the
@@ -117,9 +118,16 @@ thus app developers should be able to decide when their apps receive push notifi
 That's not the best foundation for the instant messaging use case because
 every developer of a messaging app would have to take
 care of the app server too. That's why besides the XMPP server part I implemented a generic instant
-messaging app server as part of mod_push, my ejabberd module. This allows an
-app user to use any server running ejabberd with mod_push installed. But
-that's not all. Other XMPP servers like prosody should get invited to the
+messaging app server as part of mod_push, my ejabberd module. With mod_pubsub and mod_push ejabberd thus can
+provide an all-in-one solution to the push problem, at least for instant messaging.
+
+As I said earlier Mozilla SimplePush and Ubuntu Push are different than the other services in one
+aspect. They don't require per-app authentication. So Ubuntu phone or Firefox OS users can run their own
+app server. They just need to activate the *internal app server* in their mod_push configuration.
+On the other platforms apps have to use an *external app server* run by the app developer. mod_push allows both
+setups.
+
+That's not all. Other XMPP servers like prosody should get invited to the
 party too. So I started oshiya. Oshiya is an [XMPP component](http://xmpp.org/extensions/xep-0114.html) which is an app server
 with the same XMPP interface as mod_push. So clients can choose between
 ejabberd with mod_push installed or any XMPP server with oshiya connected.
@@ -134,11 +142,6 @@ implementation status see the next section). These are:
 * [Mozilla SimplePush](https://wiki.mozilla.org/WebAPI/SimplePush)
 * [Ubuntu Push](https://developer.ubuntu.com/en/start/platform/guides/push-notifications-client-guide)
 * [WNS (Windows notification service)](https://msdn.microsoft.com/en-us//library/windows/apps/hh913756.aspx)
-
-As I said earlier Mozilla SimplePush and Ubuntu Push are different in one
-aspect. They don't require per-app authentication. This allows running your
-own app server whereas on the other platforms apps have to use an app server
-run by the app developer. My app server implementations allow both setups.
 
 An important implementation detail is how ejabberd distinguishes between
 connected and disconnected clients. mod_push uses stream management's
