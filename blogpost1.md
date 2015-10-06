@@ -111,7 +111,7 @@ to the XMPP server to pick up Bob's message.
 In order to understand why I did certain things it's nice to know my motivation for
 working on this project. I wanted to provide a missing puzzle piece for
 seamlessly working instant messaging clients on the different mobile operating
-systems. As mentioned earlier XEP-0357 only specifies what XMPP server's should do and
+systems. As mentioned earlier XEP-0357 only specifies what XMPP servers should do and
 leaves the app server part to app developers. Lance Stout told me the reason
 for this: XMPP can be used for many things, not only instant messaging and
 thus app developers should be able to decide when their apps receive push notifications and when not.
